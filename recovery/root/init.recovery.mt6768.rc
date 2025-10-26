@@ -46,6 +46,24 @@ service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-serv
     disabled
     seclabel u:r:recovery:s0
 
+# Fastbootd
+service fastbootd /system/bin/fastbootd
+    class fastbootd
+    user root
+    group root
+    socket fastbootd stream 0660 system system
+    seclabel u:r:fastbootd:s0      # КРИТИЧНО! Требует правильной метки SELinux
+    disabled
+    oneshot
+
+# Health HAL
+service vendor.health-hal-2-0 /system/bin/android.hardware.health@2.0-service
+    interface android.hardware.health@2.0::IHealth default
+    user system
+    group system
+    disabled
+    seclabel u:r:hal_health_default:s0
+
 # Управление службами в зависимости от состояния шифрования
 on property:hwservicemanager.ready=true
     write /proc/bootprof "start teei_daemon (on fs)"
@@ -53,6 +71,7 @@ on property:hwservicemanager.ready=true
     write /proc/bootprof "start teei_daemon end (on fs)"
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
+    start vendor.health-hal-2-0
 
 on property:ro.crypto.state=unsupported
     stop teei_daemon

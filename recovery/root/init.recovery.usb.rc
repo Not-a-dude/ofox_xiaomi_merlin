@@ -23,6 +23,7 @@ on post-fs
     mkdir /config/usb_gadget/g1/functions/rndis.gs4
     mkdir /config/usb_gadget/g1/functions/midi.gs5
     mkdir /config/usb_gadget/g1/functions/acm.gs0
+    mkdir /config/usb_gadget/g1/functions/fastboot
     mkdir /config/usb_gadget/g1/functions/acm.gs1
     mkdir /config/usb_gadget/g1/functions/acm.gs2
     mkdir /config/usb_gadget/g1/functions/acm.gs3
@@ -219,6 +220,24 @@ on property:sys.usb.config=adb && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/UDC ${vendor.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
     start adbd
+
+on property:sys.usb.config=fastboot && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/UDC "none"
+    
+    rm /config/usb_gadget/g1/configs/b.1/f1
+    rm /config/usb_gadget/g1/configs/b.1/f2
+    rm /config/usb_gadget/g1/configs/b.1/f3
+    rm /config/usb_gadget/g1/configs/b.1/f4
+    rm /config/usb_gadget/g1/configs/b.1/f5
+    
+    write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "fastboot"
+    write /config/usb_gadget/g1/idProduct 0x2ff7 
+    symlink /config/usb_gadget/g1/functions/fastboot /config/usb_gadget/g1/configs/b.1/f1
+    
+    start fastbootd
+    
+    write /config/usb_gadget/g1/UDC ${vendor.usb.controller}
+    setprop sys.usb.state ${sys.usb.config}
 
 ### test command start ###
 on property:vendor.usb.test=*
