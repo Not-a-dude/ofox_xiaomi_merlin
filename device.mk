@@ -58,7 +58,6 @@ ro.crypto.volume.metadata.method=dm-default-key \
 ro.crypto.volume.options=::v2 \
 ro.crypto.allow_encrypt_override=true
 
-# fastbootd - doesn't work (device not detected)
 TW_INCLUDE_FASTBOOTD := true
 PRODUCT_PROPERTY_OVERRIDES += \
 ro.fastbootd.available=true

@@ -1,4 +1,4 @@
-import /microtrust_begonia.rc
+import /microtrust_merlinx.rc
 
 on early-init
     start adbd
@@ -103,7 +103,6 @@ on early-fs
 on init
     start fix_decryption
     exec u:r:recovery:s0 -- /system/bin/sleep 0.5s
-    exec u:r:recovery:s0 -- /system/bin/fix_dynamic_static.sh
 
 # Запуск копирования логов после загрузки
 on boot

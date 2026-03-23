@@ -39,15 +39,10 @@ TESTING_LOG() {
 }
 
 set_crypt_credentials() {
-	if [ "$1" = "soft" ]; then
-		resetprop "ro.orangefox.variant" "sw_encryption";
-		resetprop "ro.orangefox.encryption" "software";
-		resetprop "fox.hardware.encryption" "0";
-	else
-		resetprop "ro.orangefox.variant" "hw_encryption";
-		resetprop "ro.orangefox.encryption" "hardware";
-		resetprop "fox.hardware.encryption" "1";
-	fi
+	# hardware encryption only
+	resetprop "ro.orangefox.variant" "hw_encryption";
+	resetprop "ro.orangefox.encryption" "hardware";
+	resetprop "fox.hardware.encryption" "1";
 }
 
 # always return True
@@ -58,7 +53,7 @@ is_dynamic_fox() {
 # report whether the ROM has dynamic partitions
 rom_has_dynamic_partitions() {
 # the device that we are building for
-local BUILD_DEVICE=begonia;
+local BUILD_DEVICE=merlinx;
   local markers="xiaomi_dynamic_partitions qti_dynamic_partitions "$BUILD_DEVICE"_dynamic_partitions "$BUILD_DEVICE"_dynpart xiaomi_dynpart qti_dynpart";
   local F=/tmp/blck_tmp;
   dd if=/dev/block/by-name/system bs=256k count=1 of=$F;

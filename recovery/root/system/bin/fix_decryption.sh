@@ -19,7 +19,7 @@
 # 	Please maintain this if you use this script or any part of it
 #
 
-source /system/bin/begonia_funcs.sh;
+source /system/bin/merlinx_funcs.sh;
 
 CP_CMD="/system/bin/cp";
 
@@ -53,7 +53,7 @@ local T;
 			echo "-2";
 			return;
 		else
-			TESTING_LOG "I cannot find the keymaster beanpod. Assuming software encryption.";
+			TESTING_LOG "I cannot find the keymaster beanpod.";
 		fi
 	fi
 
@@ -66,21 +66,19 @@ local T;
 		T=$(grep libshim $F);
 		if [ -n "$T" ]; then
 			TESTING_LOG "Hardware encryption found.";
-			set_crypt_credentials "hard";
+			set_crypt_credentials;
 			echo "1";
 			return;
 		fi
 	fi
 
-	# software
-	TESTING_LOG "Hardware encryption NOT found!";
-	set_crypt_credentials "soft";
-	echo "0";
+	# only hardware encryption supported
+	set_crypt_credentials;
+	echo "1";
 }
 
 check_hw_encryption() {
 local HWe_pod="/hw_encrypt/android.hardware.keymaster@4.0-service.beanpod";
-local SWe_pod="/sw_encrypt/android.hardware.keymaster@4.0-service.beanpod";
 local vendor_bin_hw_pod="/vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod";
 local F;
 	 # bale out if this is a dynamic build (hardcoded hardware keymaster beanpod)
@@ -97,20 +95,12 @@ local F;
 		F=/vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod;
 		local T=$(grep libshim $F);
 		if [ -n "$T" ]; then
-			set_crypt_credentials "hard";
+			set_crypt_credentials;
 			TESTING_LOG "Default = hardware";
-		else
-			set_crypt_credentials "soft";
-			TESTING_LOG "Default = software";
 		fi
 	elif [ "$F" = "1" ]; then
 		TESTING_LOG "$CP_CMD $HWe_pod $vendor_bin_hw_pod";
 		$CP_CMD -F $HWe_pod $vendor_bin_hw_pod;
-		TESTING_LOG "Result=$?";
-	else
-		rm -f $vendor_bin_hw_pod;
-		TESTING_LOG "$CP_CMD -F $SWe_pod $vendor_bin_hw_pod";
-		$CP_CMD -F $SWe_pod $vendor_bin_hw_pod;
 		TESTING_LOG "Result=$?";
 	fi
 	chmod 0755 $vendor_bin_hw_pod;

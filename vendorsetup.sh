@@ -37,7 +37,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
         export ALLOW_MISSING_DEPENDENCIES=true
         export FOX_ENABLE_APP_MANAGER=1
 	export TARGET_DEVICE_ALT="merlinx"
-	export FOX_TARGET_DEVICES="merlinx,merlin"
+	export FOX_TARGET_DEVICES="merlinx,merlinnfc,merlin"
 	export FOX_USE_BASH_SHELL=1
 	export FOX_ASH_IS_BASH=1
 	export FOX_BASH_TO_SYSTEM_BIN=1
@@ -53,9 +53,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 
 	# make all builds dynamic
 	export FOX_USE_DYNAMIC_PARTITIONS=1
-	if [ "$FOX_USE_DYNAMIC_PARTITIONS" = "1" ]; then
-		export FOX_VARIANT="HWe"; # this will support only hardware encryption
-	fi
+	export FOX_VARIANT="HWe"
 else
 	if [ -z "$FOX_BUILD_DEVICE" -a -z "$BASH_SOURCE" ]; then
 		echo "I: This script requires bash. Not processing the $FDEVICE $(basename $0)"

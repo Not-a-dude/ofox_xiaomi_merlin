@@ -20,7 +20,7 @@
 #
 #
 
-source /system/bin/begonia_funcs.sh;
+source /system/bin/merlinx_funcs.sh;
 
 # run a user_defined autoexec script at bootup
 autorun_user() {

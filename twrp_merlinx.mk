@@ -16,7 +16,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
-# Inherit from begonia device
+# Inherit from merlinx device
 $(call inherit-product, $(DEVICE_PATH)/device.mk)
 
 # Inherit any OrangeFox-specific settings

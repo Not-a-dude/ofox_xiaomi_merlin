@@ -21,7 +21,7 @@
 #
 #
 
-source /system/bin/begonia_funcs.sh
+source /system/bin/merlinx_funcs.sh
 
 # check for overwrite and restore
 check_replace() {
